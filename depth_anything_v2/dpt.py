@@ -216,6 +216,8 @@ class DepthAnythingV2(nn.Module):
         image = torch.from_numpy(image).unsqueeze(0)
         
         DEVICE = 'cuda' if torch.cuda.is_available() else 'mps' if torch.backends.mps.is_available() else 'cpu'
-        image = image.to(DEVICE)
+        precision = torch.float32 if DEVICE == 'cpu' else torch.float16
+        
+        image = image.to(DEVICE, dtype=precision)
         
         return image, (h, w)
